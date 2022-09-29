@@ -1,0 +1,137 @@
+import java.util.*;
+public class Main
+{
+    static class Node{
+        int data;
+        Node left;
+        Node right;
+        Node(int data){
+            this.data = data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    public static Node insert(Node root,int val){
+        if(root == null){
+            root = new Node(val);
+            return root;
+        }
+        if(root.data>val){
+            root.left = insert(root.left,val);
+        }
+        else{
+            root.right = insert(root.right,val);
+        }
+        return root;
+    }
+    public static Node delete(Node root,int key){
+        if(root == null) return null;
+        if(root.data == key){
+            return helper(root);
+        }
+        Node temp = root;
+        while(root!= null){
+            
+            if(root.data>key){
+                //if the element is in left
+                if(root.left != null && root.left.data == key){
+                    root.left = helper(root.left);
+                    break;
+                }
+                else 
+                root = root.left;
+            }
+            else{
+                //if the element is in right
+                if(root.right != null && root.right.data == key){
+                    root.right = helper(root.right);
+                    break;
+                }
+                else
+                root = root.right;
+            }
+        }
+        return temp;
+    }
+    public static Node helper(Node root){
+        if(root.left == null){
+            return root.right;
+        }
+        else if(root.right == null){
+            return root.left;
+        }
+        else{
+            Node rightChild = root.right;
+            Node rightMostChild = findLastNode(root.left);
+            rightMostChild.right = rightChild;
+            return root.left;
+        }
+    }
+    public static Node findLastNode(Node root){
+        if(root.right == null){
+            return root;
+        }
+        return findLastNode(root.right);
+    }
+    public static void preOrder(Node root){
+        if(root == null) return;
+        System.out.print(root.data+" ");
+        preOrder(root.left);
+        preOrder(root.right);
+    }
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		int n = sc.nextInt();
+		int key = sc.nextInt();
+		int[]nodes = new int[n];
+		for(int i=0;i<n;i++){
+		    nodes[i] = sc.nextInt();
+		}
+		Node root = null;
+		for(int node:nodes){
+		    root = insert(root,node);
+		}
+		Node ans = delete(root,key);
+		preOrder(ans);
+	}
+}
+/*Question: You are given N nodes and have to form BST from it.You are given a key K, delete node with value K.
+//Note: If K is not present in the BST, do not modify the BST.
+
+//Input
+//The first line inputs N, the number of nodes and K, key.
+//The second line inputs the value of N nodes of the BST.
+
+//Constraints:
+//1 <= N <= 1000
+//-1000 <= Val[node],K <= 1000
+
+//Output
+//Print the preorder traversal of the updated BST in a new line.
+
+//Example
+//Input:
+7 42
+2 81 42 87 90 41 66
+Output:
+2 81 66 41 87 90 
+Explaination:
+     2
+      \
+      81
+     /  \
+   42    87
+  /  \    \
+ 41   66   90
+
+As 42 is present in the given nodes, so the node 42 will deleted and the updated tree will be like 
+
+     2
+      \
+      81
+     /  \
+   66    87
+  /       \
+ 41       90
+
+The preorder will be 2 81 66 41 87 90.*/
