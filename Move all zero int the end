@@ -1,0 +1,35 @@
+class Solution {
+    public void moveZeroes(int[] nums) {
+       //Approach 2: using two pointer,swap
+        int j = 0;
+        for(int i=0;i<nums.length;i++){
+            //whenever see a non-zero element swap it with zero
+            if(nums[i]!=0){
+                swap(nums,j,i);
+                j++;
+            }
+        }
+    }
+    public void swap(int[]nums,int j,int i){
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j]= temp;
+    }
+}
+
+//  //approach 1: Move all non-zero num to front,ansthen fill the end with zero
+//         //complexity: O(n),o(1)
+//         int count = 0;
+//         for(int i =0;i<nums.length;i++){
+//             //shifting all the non-zero element in the front
+//             if(nums[i]!=0){
+//                 nums[count++] = nums[i];
+//             }
+//         }
+        
+//         //filling the array with zero after shifting all the element at the front till n
+//         while(count<nums.length){
+//             nums[count++]= 0;
+            
+            
+//         }
